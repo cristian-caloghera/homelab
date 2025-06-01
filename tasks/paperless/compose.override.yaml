@@ -1,0 +1,14 @@
+services:
+  webserver:
+    container_name: paperless-webserver
+    networks:
+      - default
+      - reverse_proxy_net
+  broker:
+    container_name: paperless-broker
+  db:
+    container_name: paperless-db
+
+networks:
+  reverse_proxy_net:
+    external: true

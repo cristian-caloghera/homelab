@@ -1,0 +1,17 @@
+services:
+  heatoil-reader:
+    image: heatoil-reader:latest
+    container_name: heatoil-reader
+    build: .  # Build from the Dockerfile in the current directory
+    restart: unless-stopped
+    env_file:
+      - ../influxdb2/.env.all-access-token
+      - ../.env.private.docker
+    environment:
+      READ_INTERVAL: 14400 # seconds
+      INFLUXDB2_URL: http://influxdb2:8086
+    networks:
+      - home_metrics
+networks:
+  home_metrics:
+    external: true

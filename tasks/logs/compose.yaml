@@ -1,0 +1,33 @@
+services:
+  loki:
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    image: grafana/loki
+    networks:
+      - reverse_proxy_net
+    volumes:
+      - ./conf/local-config.yaml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+
+  alloy:
+    container_name: alloy
+    restart: unless-stopped
+    ports:
+      - 12345:12345
+    image: grafana/alloy:latest
+    command: run --server.http.listen-addr=0.0.0.0:12345
+      --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    networks:
+      - reverse_proxy_net
+    volumes:
+      - ./conf/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  reverse_proxy_net:
+    external: true
+
+volumes:
+  loki-data: {}

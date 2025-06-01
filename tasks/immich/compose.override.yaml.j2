@@ -1,0 +1,19 @@
+services:
+  immich-server:
+    volumes:
+      - ${IMMICH_CONFIG_FILE}:${IMMICH_CONFIG_FILE}
+    networks:
+      - default
+      - reverse_proxy_net
+
+networks:
+  reverse_proxy_net:
+    external: true
+
+volumes:
+  immich_upload_location:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ nfs_server }},rw,vers=4.2
+      device: "{{ nfs_path }}"

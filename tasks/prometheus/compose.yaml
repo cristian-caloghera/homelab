@@ -1,0 +1,14 @@
+services:
+  prometheus:
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - 9090:9090
+    image: prom/prometheus
+    networks:
+      - reverse_proxy_net
+    volumes:
+     - ./config:/etc/prometheus
+networks:
+  reverse_proxy_net:
+    external: true

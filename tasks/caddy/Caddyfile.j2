@@ -1,0 +1,69 @@
+# use tabs !
+
+{
+	# also accept admin queries on other interfaces not just localhosst
+	admin :2019
+}
+
+http://testytester.{{ base_domain }} {
+	log
+	respond "hello local testytester"
+}
+
+http://dockge.{{ base_domain }} {
+	log
+	reverse_proxy dockge:5001
+}
+
+http://immich.{{ base_domain }} {
+	log
+	reverse_proxy immich_server:2283
+}
+
+http://influxdb2.{{ base_domain }} {
+	log
+	reverse_proxy influxdb2:8086
+}
+
+http://grafana.{{ base_domain }} {
+	log
+	reverse_proxy grafana:3000
+}
+
+http://paperless.{{ base_domain }} {
+	log
+	reverse_proxy paperless-webserver:8000
+}
+
+http://homepage.{{ base_domain }} http://{{ base_domain }} {
+	log
+	reverse_proxy homepage:3000
+}
+
+http://prometheus.{{ base_domain }} {
+	log
+	reverse_proxy prometheus:9090
+}
+
+{%- if local_root_cert %}
+# this will ensure that at least on https end point is configured
+# also in a local development deployment, so Caddy will generate 
+# a local root certificate (domain must end with localhost)
+{{ base_domain }}.localhost {
+	log
+	respond "Hello, local root certificate!"
+}
+{%- else %}
+
+# if no local root cert, means we go live
+immich.{{ public_domain }} {
+	tls {
+		client_auth {
+			mode require_and_verify
+			trusted_ca_cert_file /etc/caddy/client.crt
+		}
+	}
+	log
+	reverse_proxy immich_server:2283
+}
+{%- endif %}

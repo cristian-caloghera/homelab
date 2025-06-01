@@ -1,0 +1,11 @@
+services:
+  idrac6-play:
+    ports:
+      - 5801:5800
+      - 5902:5900
+    environment:
+      - IDRAC_HOST=192.168.178.117
+      - IDRAC_USER=root
+      - IDRAC_PASSWORD=calvin
+    image: domistyle/idrac6
+networks: {}

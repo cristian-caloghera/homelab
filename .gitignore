@@ -1,0 +1,3 @@
+tasks/.private
+tasks/pihole/conf/
+*.log

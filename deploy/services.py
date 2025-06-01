@@ -1,0 +1,25 @@
+from pyinfra import local, config
+
+config.SUDO = True
+
+local.include("tasks/update-upgrade.py")
+local.include("tasks/monitoring.py")
+local.include("tasks/auto-upgrades.py")
+local.include("tasks/ftpd.py")
+local.include("tasks/data-storage.py")
+local.include("tasks/docker.py")
+local.include("tasks/dockge/dockge.py")
+local.include("tasks/immich/immich.py")
+local.include("tasks/influxdb2/influxdb2.py")
+local.include("tasks/mosquitto/mosquitto.py")
+local.include("tasks/telegraf/telegraf.py")
+local.include("tasks/heatoil-reader/heatoil-reader.py")
+local.include("tasks/ha-mqtt-relay/ha-mqtt-relay.py")
+local.include("tasks/user-notify/user-notify.py")
+local.include("tasks/paperless/paperless.py")
+local.include("tasks/homepage/homepage.py")
+local.include("tasks/caddy/caddy.py")
+local.include("tasks/prometheus/prometheus.py")
+local.include("tasks/logs/logs.py")
+local.include("tasks/grafana/grafana.py")
+local.include("tasks/caddy/caddy.py")

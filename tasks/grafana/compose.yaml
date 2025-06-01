@@ -1,0 +1,24 @@
+services:
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    env_file:
+      - ../influxdb2/.env.all-access-token
+      - ../.env.private.docker
+    environment:
+          - GF_AUTH_ANONYMOUS_ENABLED=true
+          - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+          - GF_LOG_LEVEL=info
+    networks:
+      - reverse_proxy_net
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - grafana-storage:/var/lib/grafana
+networks:
+  reverse_proxy_net:
+    external: true
+volumes:
+  grafana-storage: {}
