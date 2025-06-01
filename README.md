@@ -30,8 +30,8 @@ Because in this case some pictures (click for larger version) really do tell mor
 Depiction of the high level building blocks making up the homelab setup. To keep it
 concise some details have been ommitted.
 
- * deployment is done with (pyinfra)[https://pyinfra.com/]
- * setup is based on (Docker compose)[https://docs.docker.com/compose/]
- * custom programmings in (Go)[https://go.dev/] (and some Shell)
+ * deployment is done with [pyinfra](https://pyinfra.com/)
+ * setup is based on [Go](https://docs.docker.com/compose/)
+ * custom programmings in [Go](https://go.dev/) (and some Shell)
 
 <img src="doc/high-level-blocks.png" alt="high level architecture">
