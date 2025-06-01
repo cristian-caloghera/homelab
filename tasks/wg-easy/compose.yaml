@@ -1,0 +1,23 @@
+services:
+  wg-easy:
+    container_name: wg-easy
+    environment:
+      - PORT=51821
+      - WG_PORT=51820
+      - UI_TRAFFIC_STATS=true
+      - UI_CHART_TYPE=1
+    volumes:
+      - ./conf/wg-easy:/etc/wireguard
+    ports:
+      - 51820:51820/udp  # The public UDP port of the VPN server.
+      - 51821:51821/tcp  # TCP port for Web UI.
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+    image: ghcr.io/wg-easy/wg-easy
+    env_file:
+      - ../.env.private.docker

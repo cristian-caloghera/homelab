@@ -1,0 +1,21 @@
+services:
+  user-notify:
+    image: user-notify
+    container_name: user-notify
+    build: .  # Build from the Dockerfile in the current directory
+    restart: unless-stopped
+    volumes:
+      - ./id_ed25519:/id_ed25519:ro
+    environment:
+      RELAY_FROM_MQTT: ${CCU3_MQTT}
+      TOPICS: |-
+        device/status/00019BE9A148D2/2/PRESS_LONG_RELEASE
+        topic2
+        topic3
+    env_file:
+      - ../.env.private.docker
+    networks:
+      - home_metrics
+networks:
+  home_metrics:
+    external: true

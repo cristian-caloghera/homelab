@@ -1,0 +1,15 @@
+services:
+  ftp-scraper:
+    image: ftp-scraper
+    container_name: ftp-scraper
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./scraped-files:/scraped-files
+    environment:
+      FTP_HOST: localhost
+      FTP_DIRECTORY: /dir
+      FTP_USER: ftpuser  # replace with actual value
+      FTP_PASS: ftppass  # replace with actual value
+      LOCAL_DOWNLOAD_DIR: /scraped-files
+      INTERVAL: 1m

@@ -1,0 +1,2288 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 19,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "hideTimeOverride": true,
+      "id": 1,
+      "maxDataPoints": 1,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_os_info",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_memory_MemTotal_bytes or node_memory_size_bytes",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count without(cpu) (node_cpu_seconds_total{mode=\"idle\"})",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (instance) (node_filesystem_size_bytes{fstype!=\"zfs\"} or zfs_zpool_size_bytes)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "D"
+        }
+      ],
+      "timeFrom": "1m",
+      "title": "Inventory",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "delimiter": ",",
+            "format": "json",
+            "keepTime": false,
+            "replace": false,
+            "source": "{__name__=\"node_os_info\", group=\"dev-norishor\", id=\"debian\", instance=\"192.168.100.215:9100\", job=\"node\", name=\"Debian GNU/Linux\", pretty_name=\"Debian GNU/Linux 12 (bookworm)\", version=\"12 (bookworm)\", version_codename=\"bookworm\", version_id=\"12\"}"
+          }
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "instance",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "Value #A": true,
+              "__name__": true,
+              "__name__ 1": true,
+              "group": true,
+              "group 1": true,
+              "group 2": true,
+              "group 3": true,
+              "id": true,
+              "instance": false,
+              "instance 1": false,
+              "instance 2": true,
+              "instance 3": true,
+              "instance 4": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true,
+              "mode": true,
+              "name": true,
+              "version": true,
+              "version_id": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 17,
+              "Time 2": 18,
+              "Time 3": 19,
+              "Time 4": 20,
+              "Value #A": 9,
+              "Value #B": 15,
+              "Value #C": 14,
+              "Value #D": 16,
+              "__name__ 1": 0,
+              "__name__ 2": 10,
+              "id": 1,
+              "instance": 4,
+              "job 1": 2,
+              "job 2": 11,
+              "job 3": 12,
+              "mode": 13,
+              "name": 3,
+              "pretty_name": 5,
+              "version": 7,
+              "version_codename": 6,
+              "version_id": 8
+            },
+            "renameByName": {
+              "Value #B": "RAM",
+              "Value #C": "Cores",
+              "Value #D": "Disk"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdhms"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "RAM"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "max",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Root"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "max",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Data"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge",
+                  "valueDisplayMode": "color"
+                }
+              },
+              {
+                "id": "max",
+                "value": 1
+              },
+              {
+                "id": "noValue",
+                "value": "0.0%"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reboot?"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "bool_yes_no"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "dark-red",
+                        "index": 0
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Updates?"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "unit",
+                "value": "bool_yes_no"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "1": {
+                        "color": "dark-red",
+                        "index": 0
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "1 - (avg by (instance)  (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval])))",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(node_time_seconds - node_boot_time_seconds)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "1 - (node_memory_MemAvailable_bytes or (node_memory_free_bytes + node_zfs_arcstats_size_bytes)) / (node_memory_MemTotal_bytes or node_memory_size_bytes)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "1- node_filesystem_free_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "D"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (instance) ((1 - (node_filesystem_free_bytes{fstype=\"zfs\"} or node_filesystem_free_bytes{mountpoint=\"/home\"}) / (node_filesystem_size_bytes{fstype=\"zfs\"} or node_filesystem_size_bytes{mountpoint=\"/home\"})))",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "E"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_reboot_required",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "apt_upgrades_pending or freebsd_update_pending_install",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "G"
+        }
+      ],
+      "title": "Utilization",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "instance",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Time 1": true,
+              "Value #B": false,
+              "__name__": true,
+              "device": true,
+              "fstype": true,
+              "group": true,
+              "group 3": true,
+              "job": true,
+              "job 3": true,
+              "mountpoint": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time 1": 4,
+              "Time 2": 6,
+              "Time 3": 8,
+              "Time 4": 11,
+              "Time 5": 17,
+              "Time 6": 19,
+              "Time 7": 22,
+              "Value #A": 5,
+              "Value #B": 1,
+              "Value #C": 10,
+              "Value #D": 16,
+              "Value #E": 18,
+              "Value #F": 2,
+              "Value #G": 3,
+              "__name__ 1": 21,
+              "__name__ 2": 23,
+              "device": 12,
+              "fstype": 13,
+              "instance": 0,
+              "job 1": 7,
+              "job 2": 9,
+              "job 3": 14,
+              "job 4": 20,
+              "job 5": 24,
+              "mountpoint": 15
+            },
+            "renameByName": {
+              "Time 2": "",
+              "Value #A": "CPU",
+              "Value #B": "Uptime",
+              "Value #C": "RAM",
+              "Value #D": "Root",
+              "Value #E": "Data",
+              "Value #F": "Reboot?",
+              "Value #G": "Updates?"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "string",
+                "targetField": "instance"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "Value #A"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "Value #B"
+              },
+              {
+                "destinationType": "number",
+                "targetField": "Value #C"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 10,
+      "panels": [],
+      "title": "CPU",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 33,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "percent"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 11,
+        "x": 0,
+        "y": 19
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "sum by (mode) (rate(node_cpu_seconds_total{instance=\"${instance}:${node_exporter_port}\"}[$__rate_interval]))",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Overall",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node_hwmon_temp_celsius"
+            },
+            "properties": [
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlYlRd"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 13,
+        "x": 11,
+        "y": 19
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "inverted",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "1 - (rate(node_cpu_seconds_total{mode=\"idle\", instance=\"${instance}:${node_exporter_port}\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Utilization",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*cpu=\"(\\d).*",
+            "renamePattern": "core $1"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 90,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 13,
+        "x": 11,
+        "y": 28
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "inverted",
+        "reduceOptions": {
+          "calcs": [],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_cpu_temperature_celsius{instance=\"${instance}:${node_exporter_port}\"} or node_hwmon_temp_celsius{chip=\"pci0000:00_0000:00:18_3\",sensor=\"temp1\",instance=\"${instance}:${node_exporter_port}\"}",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{sensor}}",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "Temperature",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": ".*cpu=\"(\\d).*",
+            "renamePattern": "core $1"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "dark-purple",
+                "value": 0.5
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "cpu\\mode"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "displayName",
+                "value": "core"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 13,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "fields": [],
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (mode,cpu) (rate(node_cpu_seconds_total{instance=\"${instance}:${node_exporter_port}\"}[$__rate_interval]))",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "core/mode",
+      "transformations": [
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "mode",
+            "emptyValue": "empty",
+            "rowField": "cpu",
+            "valueField": "Value"
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 4,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 25,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 76
+          },
+          "id": 12,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_active_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "instant": false,
+              "legendFormat": "Active",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_buffer_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Buffer",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_cache_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Cache",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_free_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Free",
+              "range": true,
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_inactive_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Inactive",
+              "range": true,
+              "refId": "E"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_laundry_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Laundry",
+              "range": true,
+              "refId": "F"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Size",
+              "range": true,
+              "refId": "G"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_swap_size_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Swap Size",
+              "range": true,
+              "refId": "J"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_swap_used_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Swap Used",
+              "range": true,
+              "refId": "K"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_user_wired_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Wired User",
+              "range": true,
+              "refId": "L"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_wired_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Wired System",
+              "range": true,
+              "refId": "M"
+            }
+          ],
+          "title": "Overall",
+          "transformations": [
+            {
+              "id": "concatenate",
+              "options": {
+                "frameNameLabel": "frame",
+                "frameNameMode": "label"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": false
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "{__name__=\"node_memory_active_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Active",
+                  "{__name__=\"node_memory_buffer_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Buffer",
+                  "{__name__=\"node_memory_cache_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Cache",
+                  "{__name__=\"node_memory_free_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Free",
+                  "{__name__=\"node_memory_inactive_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Inactive",
+                  "{__name__=\"node_memory_laundry_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Laundry",
+                  "{__name__=\"node_memory_size_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Size",
+                  "{__name__=\"node_memory_swap_size_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Swap Size",
+                  "{__name__=\"node_memory_swap_used_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Swap Used",
+                  "{__name__=\"node_memory_user_wired_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "User Wired",
+                  "{__name__=\"node_memory_wired_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "System Wired"
+                }
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "RAM (FreeBSD)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      },
+      "id": 18,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 25,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineStyle": {
+                  "fill": "solid"
+                },
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "percent"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  }
+                ]
+              },
+              "unit": "percentunit"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 89
+          },
+          "id": 17,
+          "options": {
+            "legend": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_Buffers_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "instant": false,
+              "legendFormat": "Buffers",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_Cached_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Cached",
+              "range": true,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_MemFree_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Free",
+              "range": true,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_Slab_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Slab",
+              "range": true,
+              "refId": "D"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_MemAvailable_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Available",
+              "range": true,
+              "refId": "E"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "expr": "node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_MemTotal_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "Total",
+              "range": true,
+              "refId": "F"
+            }
+          ],
+          "title": "Overall",
+          "transformations": [
+            {
+              "id": "concatenate",
+              "options": {
+                "frameNameLabel": "frame",
+                "frameNameMode": "label"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": false
+                },
+                "includeByName": {},
+                "indexByName": {},
+                "renameByName": {
+                  "{__name__=\"node_memory_active_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Active",
+                  "{__name__=\"node_memory_buffer_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Buffer",
+                  "{__name__=\"node_memory_cache_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Cache",
+                  "{__name__=\"node_memory_free_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Free",
+                  "{__name__=\"node_memory_inactive_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Inactive",
+                  "{__name__=\"node_memory_laundry_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Laundry",
+                  "{__name__=\"node_memory_size_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Size",
+                  "{__name__=\"node_memory_swap_size_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Swap Size",
+                  "{__name__=\"node_memory_swap_used_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "Swap Used",
+                  "{__name__=\"node_memory_user_wired_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "User Wired",
+                  "{__name__=\"node_memory_wired_bytes\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\"}": "System Wired"
+                }
+              }
+            }
+          ],
+          "type": "timeseries"
+        }
+      ],
+      "title": "RAM (Linux)",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 45
+      },
+      "id": 14,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "fixedColor": "text",
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "center",
+                "cellOptions": {
+                  "type": "color-text"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-red"
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Capacity"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "percentunit"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  },
+                  {
+                    "id": "max",
+                    "value": 1
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "continuous-GrYlRd"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 126
+          },
+          "id": 2,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": [
+                "Value #D"
+              ],
+              "reducer": [
+                "max"
+              ],
+              "show": true
+            },
+            "showHeader": true
+          },
+          "pluginVersion": "12.0.0",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "node_filesystem_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "format": "table",
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "node_filesystem_size_bytes{instance=\"${instance}:${node_exporter_port}\"} - node_filesystem_free_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "B"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "node_filesystem_avail_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "C"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "PBFA97CFB590B2093"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "1 - (node_filesystem_free_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_filesystem_size_bytes{instance=\"${instance}:${node_exporter_port}\"})",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "D"
+            }
+          ],
+          "title": "Filesystems",
+          "transformations": [
+            {
+              "id": "concatenate",
+              "options": {
+                "frameNameLabel": "frame",
+                "frameNameMode": "drop"
+              }
+            },
+            {
+              "id": "joinByField",
+              "options": {
+                "byField": "Time",
+                "mode": "outer"
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "Time": true,
+                  "__name__": true,
+                  "__name__ 1": true,
+                  "__name__ 2": true,
+                  "device 2": true,
+                  "device 3": true,
+                  "device 4": true,
+                  "fstype 2": true,
+                  "fstype 3": true,
+                  "fstype 4": true,
+                  "group 1": true,
+                  "group 2": true,
+                  "group 3": true,
+                  "group 4": true,
+                  "instance 1": true,
+                  "instance 2": true,
+                  "instance 3": true,
+                  "instance 4": true,
+                  "job 1": true,
+                  "job 2": true,
+                  "job 3": true,
+                  "job 4": true,
+                  "mountpoint 2": true,
+                  "mountpoint 3": true,
+                  "mountpoint 4": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"/dev/vtbd0p1\", fstype=\"msdosfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/boot/efi\"}": false,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"/dev/vtbd0p2\", fstype=\"ufs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/ftpdata\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/ftpdata\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/immich\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/immich\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/influxdb2\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/influxdb2\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/influxdb2/backup\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/influxdb2/backup\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/influxdb2/config\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/influxdb2/config\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/influxdb2/data\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/influxdb2/data\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/paperless-exports\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/paperless-exports\"}": true,
+                  "{__name__=\"node_filesystem_avail_bytes\", device=\"data/vms\", fstype=\"zfs\", group=\"dev-norishor\", instance=\"192.168.100.230:9100\", job=\"node\", mountpoint=\"/mnt/data/vms\"}": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 9,
+                  "Value #A": 8,
+                  "Value #B": 16,
+                  "__name__": 1,
+                  "device 1": 2,
+                  "device 2": 10,
+                  "fstype 1": 4,
+                  "fstype 2": 11,
+                  "group 1": 5,
+                  "group 2": 12,
+                  "instance 1": 6,
+                  "instance 2": 13,
+                  "job 1": 7,
+                  "job 2": 14,
+                  "mountpoint 1": 3,
+                  "mountpoint 2": 15
+                },
+                "renameByName": {
+                  "Value #A": "Size",
+                  "Value #B": "Used",
+                  "Value #C": "Avail",
+                  "Value #D": "Capacity"
+                }
+              }
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Storage",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 16,
+      "panels": [],
+      "title": "ZFS",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 0,
+        "y": 47
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_memory_free_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_zfs_arcstats_size_bytes{instance=\"${instance}:${node_exporter_port}\"} / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"} - (node_memory_free_bytes{instance=\"${instance}:${node_exporter_port}\"} + node_zfs_arcstats_size_bytes{instance=\"${instance}:${node_exporter_port}\"})) / node_memory_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        }
+      ],
+      "title": "ARC Allocation",
+      "transformations": [
+        {
+          "id": "concatenate",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "group 1": true,
+              "group 2": true,
+              "group 3": true,
+              "instance 1": true,
+              "instance 2": true,
+              "instance 3": true,
+              "job 1": true,
+              "job 2": true,
+              "job 3": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "Value #A": "Free",
+              "Value #B": "ZFS ARC",
+              "Value #C": "Allocated"
+            }
+          }
+        }
+      ],
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-RdYlGr"
+          },
+          "mappings": [],
+          "max": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 3,
+        "x": 3,
+        "y": 47
+      },
+      "id": 19,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "node_zfs_arcstats_hits_total{instance=\"${instance}:${node_exporter_port}\"} / (node_zfs_arcstats_hits_total{instance=\"${instance}:${node_exporter_port}\"} + node_zfs_arcstats_misses_total{instance=\"${instance}:${node_exporter_port}\"})",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "ARC Hits",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-text"
+            },
+            "inspect": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "DEGRADED": {
+                  "color": "dark-yellow",
+                  "index": 1
+                },
+                "FAULTED": {
+                  "color": "dark-red",
+                  "index": 2
+                },
+                "OFFLINE": {
+                  "color": "dark-orange",
+                  "index": 3
+                },
+                "ONLINE": {
+                  "color": "dark-green",
+                  "index": 0
+                },
+                "REMOVED": {
+                  "color": "dark-orange",
+                  "index": 5
+                },
+                "UNAVAIL": {
+                  "color": "dark-red",
+                  "index": 4
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Size"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Free"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decbytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 18,
+        "x": 6,
+        "y": 47
+      },
+      "id": 21,
+      "options": {
+        "cellHeight": "lg",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "zfs_zpool{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "zfs_zpool_size_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "zfs_zpool_free_bytes{instance=\"${instance}:${node_exporter_port}\"}",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "C"
+        }
+      ],
+      "title": "Pools",
+      "transformations": [
+        {
+          "disabled": true,
+          "id": "concatenate",
+          "options": {}
+        },
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "zpool_name",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "labelsToFields",
+          "options": {
+            "mode": "columns"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "Value #A": true,
+              "__name__": true,
+              "instance": true,
+              "job": true,
+              "version": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 2,
+              "Value #A": 13,
+              "Value #B": 18,
+              "Value #C": 17,
+              "__name__ 1": 10,
+              "__name__ 2": 14,
+              "__name__ 3": 19,
+              "ashift": 5,
+              "autoreplace": 6,
+              "failmode": 7,
+              "health": 4,
+              "instance 1": 11,
+              "instance 2": 15,
+              "instance 3": 20,
+              "job 1": 12,
+              "job 2": 16,
+              "job 3": 21,
+              "readonly": 8,
+              "version": 9,
+              "zpool_name": 3
+            },
+            "renameByName": {
+              "Value #B": "Size",
+              "Value #C": "Free"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "depozit",
+          "value": "depozit"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PBFA97CFB590B2093"
+        },
+        "definition": "label_values(up{job=\"node\"},instance)",
+        "label": "Instance",
+        "name": "instance",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up{job=\"node\"},instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "(.*):.*",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "9100",
+          "value": "9100"
+        },
+        "hide": 2,
+        "name": "node_exporter_port",
+        "query": "9100",
+        "skipUrlSync": true,
+        "type": "constant"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Nodes",
+  "uid": "cekonx2e8d98gc",
+  "version": 2
+}

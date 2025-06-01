@@ -1,0 +1,15 @@
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: unless-stopped
+    env_file:
+      - ../influxdb2/.env.all-access-token
+      - ../.env.private.docker
+    networks:
+      - home_metrics
+    volumes:
+      - ./config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+networks:
+  home_metrics:
+    external: true

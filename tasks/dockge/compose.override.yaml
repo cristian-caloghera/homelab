@@ -1,0 +1,10 @@
+services:
+  dockge:
+    container_name: dockge
+    networks:
+      - default
+      - reverse_proxy_net
+
+networks:
+  reverse_proxy_net:
+    external: true

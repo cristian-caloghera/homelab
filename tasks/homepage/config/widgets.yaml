@@ -1,0 +1,15 @@
+- openmeteo:
+    label: {{HOMEPAGE_VAR_OPENMETEO_LABEL}}
+    latitude: {{HOMEPAGE_VAR_OPENMETEO_LAT}}
+    longitude: {{HOMEPAGE_VAR_OPENMETEO_LONG}}
+    units: metric
+    cache: 10
+- datetime:
+    text_size: 4xl
+    locale: de
+    format:
+      timeStyle: short
+      hourCycle: h23
+- greeting:
+    text_size: 4xl
+    text: {{HOMEPAGE_VAR_DOMAIN}}

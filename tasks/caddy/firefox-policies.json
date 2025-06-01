@@ -1,0 +1,9 @@
+{
+  "policies": {
+    "Certificates": {
+      "Install": [
+        "/usr/local/share/ca-certificates/caddy-root-ca.crt"
+      ]
+    }
+  }
+}

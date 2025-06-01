@@ -1,0 +1,19 @@
+services:
+  ha-mqtt-relay:
+    image: relay-to-ccu3
+    container_name: relay-to-ccu3
+    build: .  # Build from the Dockerfile in the current directory
+    restart: unless-stopped
+    environment:
+      RELAY_FROM_MQTT: mqtt-broker:1883
+      TOPICS: |-
+        ems-esp/boiler_data_dhw
+        topic2
+        topic3
+    env_file:
+      - ../.env.private.docker
+    networks:
+      - home_metrics
+networks:
+  home_metrics:
+    external: true

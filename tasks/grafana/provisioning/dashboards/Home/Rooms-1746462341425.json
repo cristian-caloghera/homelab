@@ -1,0 +1,230 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 22,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PDF3F1B59A8202144"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "yellow",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepAfter",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "ACTUAL_TEMPERATURE"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Actual Temperature"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SET_POINT_TEMPERATURE"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Set Temperature"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "HUMIDITY"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Humidity"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "LEVEL"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Valve Opening"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "max",
+            "range",
+            "median",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.1",
+      "targets": [
+        {
+          "query": "from(bucket: \"ww29\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ccu3_ACTUAL_TEMPERATURE\" or r[\"_measurement\"] == \"ccu3_SET_POINT_TEMPERATURE\")\n  |> filter(fn: (r) => r[\"location\"] == \"${roomlist}\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PDF3F1B59A8202144"
+          },
+          "hide": false,
+          "query": "from(bucket: \"ww29\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"location\"] == \"${roomlist}\")\n  |> filter(fn: (r) => r[\"_measurement\"] == \"ccu3_HUMIDITY\" or r[\"_measurement\"] == \"ccu3_LEVEL\")\n  |> map(fn: (r) => ({r with _value: if r[\"_measurement\"] == \"ccu3_LEVEL\" then r._value * 100.0 else r._value}))\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "refId": "B"
+        }
+      ],
+      "title": "Climate",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "EG Wohnzimmer",
+          "value": "EG Wohnzimmer"
+        },
+        "datasource": {
+          "type": "influxdb",
+          "uid": "PDF3F1B59A8202144"
+        },
+        "definition": "import \"influxdata/influxdb/schema\"\nimport \"strings\"\n\nschema.tagValues(\n  bucket: \"ww29\",\n  tag: \"location\",\n  predicate: (r) => r._measurement =~ /ccu3_.*/,\n  start: v.timeRangeStart,\n  stop: v.timeRangeStop)",
+        "label": "Room",
+        "name": "roomlist",
+        "options": [],
+        "query": {
+          "maxDataPoints": 1000,
+          "query": "import \"influxdata/influxdb/schema\"\nimport \"strings\"\n\nschema.tagValues(\n  bucket: \"ww29\",\n  tag: \"location\",\n  predicate: (r) => r._measurement =~ /ccu3_.*/,\n  start: v.timeRangeStart,\n  stop: v.timeRangeStop)",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Rooms",
+  "uid": "eek9u6o1k5hj4a",
+  "version": 2
+}

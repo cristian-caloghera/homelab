@@ -1,0 +1,14 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mqtt-broker
+    restart: unless-stopped
+    networks:
+      - home_metrics
+    volumes:
+      - ./config:/mosquitto/config
+    ports:
+      - 1883:1883
+networks:
+  home_metrics:
+    external: true
