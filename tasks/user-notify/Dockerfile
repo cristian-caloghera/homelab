@@ -12,6 +12,6 @@ RUN apt-get update && apt-get -y --no-install-recommends --no-install-suggests i
 
 RUN mkdir /user-notify
 
-COPY user-notify.sh noitify-d.sh /user-notify
+COPY user-notify.sh notify-d.sh /user-notify
 
 ENTRYPOINT ["/usr/bin/bash", "/user-notify/user-notify.sh"]
