@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
@@ -10,9 +11,8 @@ import (
 	"strings"
 	"time"
 	"unicode"
-	"context"
 
-	"github.com/influxdata/influxdb-client-go/v2"
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
 )
 
@@ -24,23 +24,6 @@ func removeNonNumericChars(s string) string {
 		}
 	}
 	return sb.String()
-}
-
-func extractLineFromString(text string, lineNumber int) (string, error) {
-	if text == "" {
-		return "", fmt.Errorf("text is empty")
-	}
-	if lineNumber <= 0 {
-		return "", fmt.Errorf("invalid line number: %d (must be >= 1)", lineNumber)
-	}
-
-	lines := strings.Split(text, "\n") // Split the string into lines
-
-	if lineNumber > len(lines) {
-		return "", fmt.Errorf("line number %d is out of range (total lines: %d)", lineNumber, len(lines))
-	}
-
-	return lines[lineNumber-1], nil // Adjust for 0-based indexing
 }
 
 // getHTMLContent fetches the HTML content from a given URL.
@@ -68,10 +51,10 @@ func getHTMLContent(url string) (string, error) {
 }
 
 type Tank struct {
-	available   uint64
-	capacity    uint64
-	fillVolume  uint64
-	percentage  float64
+	available  uint64
+	capacity   uint64
+	fillVolume uint64
+	percentage float64
 }
 
 func getTankFrom(url string) (Tank, error) {
@@ -106,9 +89,9 @@ func getTankFrom(url string) (Tank, error) {
 	}
 
 	t := Tank{
-		available:     a,
-		capacity:      c,
-		fillVolume:    f,
+		available:  a,
+		capacity:   c,
+		fillVolume: f,
 		percentage: p / 100.0,
 	}
 
@@ -120,12 +103,12 @@ func getTankFrom(url string) (Tank, error) {
 func doWork(url string, dbWrite api.WriteAPI) {
 	tank, err := getTankFrom(url)
 	if err == nil {
-	    // Create a point
+		// Create a point
 		tags := map[string]string{
 			"location": "oil tank",
 		}
 		fields := map[string]interface{}{
-			"available": tank.available,
+			"available":  tank.available,
 			"fillVolume": tank.fillVolume,
 			"percentage": tank.percentage,
 		}
@@ -173,15 +156,15 @@ func main() {
 	log.Printf("Reading from %v every %v.", urlString, intervalDuration)
 
 	// get InfluxDB2 connection details from environment
-	dbURL   := getEnvVar("INFLUXDB2_URL")
+	dbURL := getEnvVar("INFLUXDB2_URL")
 	dbToken := getEnvVar("INFLUXDB2_TOKEN")
 
 	log.Printf("Establishing connection to InfluxDB2: %v", dbURL)
 	dbClient := influxdb2.NewClient(dbURL, dbToken)
-    // validate client connection health
-    _, err = dbClient.Health(context.Background())
+	// validate client connection health
+	_, err = dbClient.Health(context.Background())
 	if err != nil {
-    	log.Fatal("Connection is not successful. Aborting!")
+		log.Fatal("Connection is not successful. Aborting!")
 	}
 	log.Println("Connection is successful.")
 
@@ -193,23 +176,9 @@ func main() {
 
 	var dbWriter api.WriteAPI = dbClient.WriteAPI("BuruOrg", "ww29")
 
-	ticker := time.NewTicker(intervalDuration)
-	defer ticker.Stop() // Ensure the ticker is stopped when the function exits.
-
-	// Launch a goroutine that will print the words.
-	go func(url string, dbWrite api.WriteAPI) {
-		// do an initial round ot not wait for the 1st
-		// as the it typically takes hours
-		doWork(url, dbWrite)
-		for {
-			// wait for the tick
-			//timestamp := <-ticker.C
-			<-ticker.C
-			// now do stuff
-			doWork(url, dbWrite)
-		}
-	}(urlString, dbWriter)
-
-	// Keep the main function running until signaled.
-	select {}
+	// keep on spinning forever (aka CTRL-C)
+	for {
+		doWork(urlString, dbWriter)
+		time.Sleep(intervalDuration)
+	}
 }
