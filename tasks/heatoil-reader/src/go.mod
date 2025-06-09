@@ -1,6 +1,8 @@
 module heatoil-reader
 
-go 1.19
+go 1.23.0
+
+toolchain go1.24.2
 
 require github.com/influxdata/influxdb-client-go/v2 v2.14.0
 
