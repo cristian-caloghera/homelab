@@ -45,6 +45,11 @@ http://prometheus.{{ base_domain }} {
 	reverse_proxy prometheus:9090
 }
 
+http://vpn.{{ base_domain }} {
+	log
+	reverse_proxy wireguard.{{ base_domain }}:51821
+}
+
 {%- if local_root_cert %}
 # this will ensure that at least on https end point is configured
 # also in a local development deployment, so Caddy will generate 
@@ -65,5 +70,10 @@ immich.{{ public_domain }} {
 	}
 	log
 	reverse_proxy immich_server:2283
+}
+
+photos.{{ public_domain }} {
+	log
+	reverse_proxy immich-public-proxy:3000
 }
 {%- endif %}

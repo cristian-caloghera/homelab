@@ -19,10 +19,11 @@ files.download(
     group="setup"
 )
 
-files.put(
-    name="Copy the immich configuration file",
-    src="tasks/immich/immich-config.json",
+files.template(
+    name="Generate Immich configuration file",
+    src="tasks/immich/immich-config.json.j2",
     dest="/opt/stacks/immich/immich-config.json",
+    public_domain=host.data.caddy_public_domain,
     mode="644",
     user="setup",
     group="setup"
