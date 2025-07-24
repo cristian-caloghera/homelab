@@ -174,14 +174,16 @@
     "enabled": true
   },
   "server": {
-    "externalDomain": "",
+    "externalDomain": "https://photos.{{ public_domain }}",
     "loginPageMessage": "",
     "publicUsers": true
   },
   "storageTemplate": {
     "enabled": true,
     "hashVerificationEnabled": true,
+{%- raw %}
     "template": "{{y}}/{{MM}}/{{filename}}"
+{%- endraw %}
   },
   "templates": {
     "email": {
