@@ -43,19 +43,22 @@ handle_payload()
 {
   local topic=$1
   local payload=$2
+  local ccujack_json=""
 
   echo "Received payload on ${topic}:\n $payload"
 
   case "$topic" in
     "ems-esp/boiler_data_dhw")
-      # add your action here
       local curtemp=$(echo ${payload} | jq ".curtemp")
-      local ccujack_json="{\"v\": ${curtemp}}"
+      ccujack_json="{\"v\": ${curtemp}}"
       echo ${curtemp} ${ccujack_json}
       curl -X PUT -d "${ccujack_json}" http://${CCU_JACK}/sysvar/13101/~pv
       ;;
-    "topic2")
-      # add your action here
+    "ems-esp/boiler_data")
+      local outdoortemp=$(echo ${payload} | jq ".outdoortemp")
+      ccujack_json="{\"v\": ${outdoortemp}}"
+      echo ${outdoortemp} ${ccujack_json}
+      curl -X PUT -d "${ccujack_json}" http://${CCU_JACK}/sysvar/13947/~pv
       ;;
     "topic3")
       # add your action here
