@@ -14,37 +14,6 @@ pkg.packages(
         "bhyve-firmware"]
 )
 
-# assume the pool has been already created
-# because each machine has a different kinf of pool setup
-
-# pool name might differ from host to host
-zfs_pool="data"
-
-datasets = [
-    zfs_pool + "/appdata/immich",
-    zfs_pool + "/appdata/influxdb2/data",
-    zfs_pool + "/appdata/influxdb2/config",
-    zfs_pool + "/appdata/influxdb2/backup",
-    zfs_pool + "/appdata/paperless-exports",
-    zfs_pool + "/vm"
-]
-
-for dataset in datasets:
-    zfs.dataset(dataset, recursive=True)
-
-
-files.line(
-    name="Enable VM (bhyve)",
-    path="/etc/rc.conf",
-    line='vm_enable="YES"',
-)
-
-files.line(
-    name="Set VM storage",
-    path="/etc/rc.conf",
-    line='vm_dir="zfs:' + zfs_pool + '/vm"',
-)
-
 users = host.get_fact(Users, )
 
 if not "appdata" in users:
@@ -63,12 +32,39 @@ appdata:10001::::::/nonexistent::appdata
         commands="adduser -f /root/user.list"
     )
 
-files.directory(
-    name="Set appdata permissions on /mnt/data/appdata",
-    path="/mnt/data/appdata",
-    user="appdata",
-    group="appdata",
-    recursive=True
+# assume the pool has been already created
+# because each machine has a different kinf of pool setup
+
+# pool name might differ from host to host
+zfs_pool="data"
+
+datasets = [
+    zfs_pool + "/appdata/immich",
+    zfs_pool + "/appdata/influxdb2/data",
+    zfs_pool + "/appdata/influxdb2/config",
+    zfs_pool + "/appdata/influxdb2/backup",
+    zfs_pool + "/appdata/minecraft",
+    zfs_pool + "/appdata/mumble",
+    zfs_pool + "/appdata/paperless-exports",
+    zfs_pool + "/vm"
+]
+
+for dataset in datasets:
+    zfs.dataset(dataset, recursive=True)
+    if dataset == (zfs_pool + "/vm"):
+        continue
+    files.directory(path="/mnt/" + dataset, user="appdata", group="appdata", recursive=True)
+
+files.line(
+    name="Enable VM (bhyve)",
+    path="/etc/rc.conf",
+    line='vm_enable="YES"',
+)
+
+files.line(
+    name="Set VM storage",
+    path="/etc/rc.conf",
+    line='vm_dir="zfs:' + zfs_pool + '/vm"',
 )
 
 etc_exports = StringIO("""V4: /mnt/data
@@ -78,6 +74,8 @@ etc_exports = StringIO("""V4: /mnt/data
 /mnt/data/appdata/influxdb2/data -maproot=appdata:appdata
 /mnt/data/appdata/influxdb2/config -maproot=appdata:appdata
 /mnt/data/appdata/influxdb2/backup -maproot=appdata:appdata
+/mnt/data/appdata/minecraft -maproot=appdata:appdata
+/mnt/data/appdata/mumble -maproot=appdata:appdata
 /mnt/data/appdata/paperless-exports -maproot=appdata:appdata
 """)
 

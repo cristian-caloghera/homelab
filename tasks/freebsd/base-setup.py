@@ -47,7 +47,7 @@ files.line(
 
 server.shell(
     name="Start ZFS",
-    commands="service zfs restart"
+    commands="service zfs start"
 )
 
 # Sync local files/tempdir to remote /tmp/tempdir
@@ -110,7 +110,7 @@ crontab.crontab(
     cron_name="node exporter smartmon",
     command=node_exporter_scripts + '/node_exporter_textfile_metric.sh ' + node_exporter_scripts + '/smartmon.sh /var/tmp/node_exporter',
     hour=16,
-    minute=05
+    minute=5
 )
 
 crontab.crontab(
@@ -132,7 +132,6 @@ files.line(
     path="/etc/rc.conf",
     line='nfsv4_server_enable="YES"'
 )
-
 
 becap_host = private_data.get('becap_host')
 
