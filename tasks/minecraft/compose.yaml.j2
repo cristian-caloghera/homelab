@@ -1,0 +1,76 @@
+services:
+  mc-fabric:
+    image: itzg/minecraft-server
+    environment:
+      EULA: "TRUE"
+      TYPE: "FABRIC"
+      ENABLE_ROLLING_LOGS: "TRUE"
+      LOG_TIMESTAMP: "TRUE"
+      ENABLE_WHITELIST: "true"
+      WHITELIST: |-
+        Gamerogog
+        Pixelwolf075268
+        rexilei
+      OPS: |
+        Pixelwolf075268
+    volumes:
+      - ./data:/data
+    networks:
+      - minecraft
+  mc-fabric-backup:
+    image: itzg/mc-backup
+    depends_on:
+      mc-fabric:
+        condition: service_healthy
+    environment:
+      BACKUP_INTERVAL: "7d"
+      PRUNE_BACKUPS_DAYS: "21"
+      PAUSE_IF_NO_PLAYERS: "true"
+      PLAYERS_ONLINE_CHECK_INTERVAL: "8h"
+      RCON_HOST: mc-fabric
+      # since this service waits for mc to be healthy, no initial delay is needed
+      INITIAL_DELAY: 0
+    volumes:
+      - ./data:/data:ro
+      - type: volume
+        source: mc-fabric-backups
+        target: /backups
+        volume:
+          nocopy: true
+    networks:
+      - minecraft
+# another server
+#  forge:
+#    image: itzg/minecraft-server
+#    environment:
+#      EULA: "TRUE"
+#      TYPE: FORGE
+  router:
+    image: itzg/mc-router
+    depends_on:
+      - mc-fabric
+    environment:
+      MAPPING: |
+        mc-test=mc-fabric:25565
+        mc-banane.burunet.lol=mc-fabric:25565
+        mc-banane.burunet.dedyn.io=mc-fabric:25565
+    ports:
+      - "25565:25565"
+    networks:
+      - minecraft
+
+networks:
+  minecraft:
+    external: true
+
+volumes:
+  mc-fabric-backups:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ nfs_server }},rw,vers=4.2
+      device: "{{ nfs_path }}"
+
+# apparently this will reload the config without a server restart
+# mc-image-helper sync --skip-newer-in-destination /config /data/config
+# Link: https://github.com/itzg/docker-minecraft-server/discussions/1279

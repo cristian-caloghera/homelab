@@ -28,14 +28,17 @@ files.download(
     group="setup"
 )
 
-files.put(
-    name="Copy the Dockge compose override file",
-    src="tasks/dockge/compose.override.yaml",
-    dest="/opt/dockge/compose.override.yaml",
-    mode="644",
-    user="setup",
-    group="setup"
-)
+# override only adds dockge to reverse proxy net
+# so only do this for host (dev_)norishor
+if 'norishor' in host.name: 
+    files.put(
+        name="Copy the Dockge compose override file",
+        src="tasks/dockge/compose.override.yaml",
+        dest="/opt/dockge/compose.override.yaml",
+        mode="644",
+        user="setup",
+        group="setup"
+    )
 
 server.shell(
     name="Compose up Dockge",

@@ -11,10 +11,12 @@ files.directory(
     group="setup"
 )
 
-files.put(
-    name="Deploy minecraft compose file",
-    src="tasks/minecraft/compose.yaml",
+files.template(
+    name="Deploy Minecraft Fabric docker compose",
+    src="tasks/minecraft/compose.yaml.j2",
     dest=stack_path + "compose.yaml",
+    nfs_server=host.data.nfs_server,
+    nfs_path=host.data.nfs_server_path_prefix + "minecraft",
     mode="644",
     user="setup",
     group="setup"

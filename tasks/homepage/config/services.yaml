@@ -37,6 +37,12 @@
         widget:
           type: prometheus
           url: http://prometheus:9090
+    - InfluxDB:
+        href: http://influxdb2.{{HOMEPAGE_VAR_DOMAIN}}
+        description: influxdb2.{{HOMEPAGE_VAR_DOMAIN}}
+        ping: influxdb2
+        server: localhost-docker
+        container: influxdb2
 - Services:
     - Document Archive:
         icon: paperless-ngx
@@ -74,9 +80,7 @@
           url: http://grafana:3000
           username: {{HOMEPAGE_VAR_GRAFANA_USER}}
           password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
-    - InfluxDB:
-        href: http://influxdb2.{{HOMEPAGE_VAR_DOMAIN}}
-        description: influxdb2.{{HOMEPAGE_VAR_DOMAIN}}
-        ping: influxdb2
-        server: localhost-docker
-        container: influxdb2
+    - Minecraft:
+        widget:
+          type: minecraft
+          url: udp://mc-banane.burunet.lol:25565
