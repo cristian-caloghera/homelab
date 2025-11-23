@@ -39,25 +39,3 @@ volumes:
       type: nfs
       o: addr={{ nfs_server }},rw,vers=4.2
       device: "{{ nfs_path }}"
-# important stuff
-# to reload mumble ssl info, execute: kill -10 1
-# this is equivalent to: https://wiki.archlinux.org/title/Mumble#SSL/TLS
-
-# to execute it inside the docker container:
-# docker exec -it <container> sh
-
-# set various other configs, like supervisor password and limits
-
-# also: https://github.com/acmesh-official/acme.sh/wiki/deploy-to-docker-containers
-
-# acme.sh: deploy to docker does *not* seem to work at all
-# also forthe annoying cert key as 0600 root:root
-# --post-hook 'chown 1000:1000 ${CERT_KEY_PATH}'
-# https://github.com/acmesh-official/acme.sh/issues/5333
-
-# to get cert via acme.sh
-# 1. register with zerossl as CA provider
-#       sudo docker exec .it acme.sh acme.sh  --register-account  -m myemail@example.com --server zerossl 
-# 2. use acme.sh to issue a cert via DNS challenge by desec.io
-#       export DEDYN_TOKEN=<...>     # this will be saved in the config
-#       sudo docker exec .it acme.sh acme.sh --issue --dns dns_desec -d foobar.dedyn.io -d *.foobar.dedyn.io
