@@ -9,8 +9,7 @@ services:
       LOG_TIMESTAMP: "TRUE"
       ENABLE_WHITELIST: "true"
       WHITELIST_FILE: /whitelist.json
-      OPS: |
-        Diveduff
+      OPS_FILE: /ops.json
       ALLOW_FLIGHT: "true"
       MODRINTH_PROJECTS: |
         fabric-api
@@ -21,6 +20,7 @@ services:
     volumes:
       - ./data:/data
       - ./whitelist.json:/whitelist.json
+      - ./ops.json:/ops.json
     networks:
       - minecraft
     ports:

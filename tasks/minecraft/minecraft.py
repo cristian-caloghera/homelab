@@ -29,6 +29,13 @@ files.put(
     mode="644",
 )
 
+files.put(
+    name="Upload ops list of players",
+    src="tasks/.private/minecraft/ops.json",
+    dest=stack_path + "ops.json",
+    mode="644",
+)
+
 docker.network(
     name="Set up dedicated network for minecraft",
     network="minecraft",
