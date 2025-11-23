@@ -22,6 +22,13 @@ files.template(
     group="setup"
 )
 
+files.put(
+    name="Upload whitelist of players",
+    src="tasks/.private/minecraft/whitelist.json",
+    dest=stack_path + "whitelist.json",
+    mode="644",
+)
+
 docker.network(
     name="Set up dedicated network for minecraft",
     network="minecraft",
@@ -33,3 +40,4 @@ server.shell(
     name="Compose up minecraft",
     commands=["cd " + stack_path + " && docker compose up -d"]
 )
+
