@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -e
+set -xe
 
 # in this PoC we ignore error handling
 

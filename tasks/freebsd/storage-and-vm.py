@@ -131,7 +131,7 @@ files.directory(
 crontab.crontab(
     name="Crontab becap run",
     cron_name="becap run",
-    command='/root/scripts/becap-run.sh > /var/log/becap-run/last.log',
+    command='/root/scripts/becap-run.sh > /var/log/becap-run/last.log 2>&1',
     day_of_month=21,
     hour=17,
     minute=40

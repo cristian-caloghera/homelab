@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# print commands and exit on error
+set -xe
+
 DATASET=$1
 PREFIX=""
 
@@ -33,6 +36,14 @@ fi
 SNAP_NOW=$DATASET@$PREFIX$N
 zfs snapshot -r $SNAP_NOW
 # we should actually check that destination exists
-zfs send -R $INC_PARAM $SNAP_NOW | ssh root@becap zfs recv $DEST
+# explictly check for errors
+set +e
+zfs send -v -R $INC_PARAM $SNAP_NOW | ssh root@becap zfs recv -o atime=off -o readonly=on $DEST
+
+retVal=$?
+if [ $retVal != 0 ]; then
+    echo "Failed trying to send incremental snaphot. Will send a complete snapshot instead."
+	#zfs send -R -I $DATASET@3 $SNAP_NOW | ssh root@becap zfs recv $DEST
+fi
 
 echo you have now $((N - FIRST_N + 1)) snapshots
