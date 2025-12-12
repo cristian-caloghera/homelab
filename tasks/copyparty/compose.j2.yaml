@@ -1,0 +1,45 @@
+---
+
+services:
+  copyparty:
+    image: copyparty/ac:latest
+    container_name: copyparty
+    user: "10001:10001"
+    ports:
+      - 3923:3923
+    volumes:
+      - ./cfg:/cfg
+      - type: volume
+        source: copyparty-w
+        target: /w
+        volume:
+          nocopy: true
+    networks:
+      - reverse_proxy_net
+    environment:
+      LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE
+      # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
+
+      PYTHONUNBUFFERED: 1
+      # ensures log-messages are not delayed (but can reduce speed a tiny bit)
+
+    stop_grace_period: 5s  # thumbnailer is allowed to continue finishing up for 10s after the shutdown signal
+    healthcheck:
+      # hide it from logs with "/._" so it matches the default --lf-url filter
+      test: ["CMD-SHELL", "wget --spider -q 127.0.0.1:3923/?reset=/._"]
+      interval: 1m
+      timeout: 2s
+      retries: 5
+      start_period: 15s
+
+networks:
+  reverse_proxy_net:
+    external: true
+
+volumes:
+  copyparty-w:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr={{ nfs_server }},rw,vers=4.2
+      device: "{{ nfs_path }}"

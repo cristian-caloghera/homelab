@@ -1,5 +1,5 @@
 from pyinfra import host, logger
-from pyinfra.operations import files, apt, systemd, docker
+from pyinfra.operations import files, apt, systemd, docker, server
 from pyinfra.facts.server import LinuxDistribution
 from pyinfra.facts.deb import DebArch
 
@@ -63,4 +63,12 @@ systemd.service(
     service="docker",
     restarted=True,
     _if=docker_config.did_change
+)
+
+# Have a user own the data of the docker applicatiosn
+# helps with backing up stuff
+server.user(
+    name="Ensure appdata user exists",
+    user="appdata",
+    uid="10001"
 )

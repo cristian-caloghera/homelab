@@ -15,6 +15,11 @@ http://dockge.{{ base_domain }} {
 	reverse_proxy dockge:5001
 }
 
+http://copyparty.{{ base_domain }} {
+	log
+	reverse_proxy copyparty:3923
+}
+
 http://immich.{{ base_domain }} {
 	log
 	reverse_proxy immich_server:2283

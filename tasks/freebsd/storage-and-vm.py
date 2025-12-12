@@ -39,6 +39,7 @@ appdata:10001::::::/nonexistent::appdata
 zfs_pool="data"
 
 datasets = [
+    zfs_pool + "/appdata/copyparty",
     zfs_pool + "/appdata/immich",
     zfs_pool + "/appdata/influxdb2/data",
     zfs_pool + "/appdata/influxdb2/config",
@@ -70,6 +71,7 @@ files.line(
 etc_exports = StringIO("""V4: /mnt/data
 
 # NFSv4
+/mnt/data/appdata/copyparty -maproot=appdata:appdata
 /mnt/data/appdata/immich -maproot=appdata:appdata
 /mnt/data/appdata/influxdb2/data -maproot=appdata:appdata
 /mnt/data/appdata/influxdb2/config -maproot=appdata:appdata

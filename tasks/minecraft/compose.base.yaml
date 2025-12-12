@@ -1,0 +1,71 @@
+services:
+  mc-server:
+    image: itzg/minecraft-server
+    restart: always
+    environment:
+      UID: "10001"
+      GID: "10001"
+      EULA: "TRUE"
+      TYPE: "FABRIC"
+      VERSION: "1.21.10"
+      ENABLE_ROLLING_LOGS: "TRUE"
+      LOG_TIMESTAMP: "TRUE"
+      ENABLE_WHITELIST: "true"
+      WHITELIST_FILE: /whitelist.json
+      OPS_FILE: /ops.json
+      ALLOW_FLIGHT: "true"
+      MODRINTH_PROJECTS: |
+        fabric-api
+        floodgate
+        disconnect-packet-fix
+      PLUGINS: |
+        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/fabric
+    volumes:
+#      - ./mc-server:/data
+      - ./whitelist.json:/whitelist.json
+      - ./ops.json:/ops.json
+#    networks:
+#     - banane
+#    ports:
+#      - 19132:19132/udp
+#      - 25565:25565
+  mc-backup:
+    image: itzg/mc-backup
+    restart: always
+#    depends_on:
+#      mc-server:
+#        condition: service_healthy
+    environment:
+      BACKUP_INTERVAL: "7d"
+      PRUNE_BACKUPS_DAYS: "21"
+      PAUSE_IF_NO_PLAYERS: "true"
+      PLAYERS_ONLINE_CHECK_INTERVAL: "8h"
+      RCON_HOST: mc-backup
+#      BACKUP_NAME: mc-backup
+      # since this service waits for mc to be healthy, no initial delay is needed
+      INITIAL_DELAY: 0
+    volumes:
+#      - ./mc-server:/data:ro
+      - type: volume
+        source: mc-fabric-backups
+        target: /backups
+        volume:
+          nocopy: true
+#    networks:
+#      - banane
+
+# because of GeyserMC we cannot really use the router from itzg
+# https://github.com/itzg/mc-router/issues/189
+#  router:
+#    image: itzg/mc-router
+#    restart: unless-stopped
+#    depends_on:
+#      - mc-fabric
+#    environment:
+#      MAPPING: |
+#        mc-test=mc-fabric:25565
+#        mc-banane.demo.com=mc-fabric:25565
+#    ports:
+#      - "25565:25565"
+#    networks:
+#      - minecraft

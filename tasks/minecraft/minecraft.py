@@ -23,10 +23,21 @@ files.template(
 )
 
 files.put(
+    name="Upload Docker compose base config",
+    src="tasks/minecraft/compose.base.yaml",
+    dest=stack_path + "compose.base.yaml",
+    mode="644",
+    user="setup",
+    group="setup"
+)
+
+files.put(
     name="Upload whitelist of players",
     src="tasks/.private/minecraft/whitelist.json",
     dest=stack_path + "whitelist.json",
     mode="644",
+    user="setup",
+    group="setup"
 )
 
 files.put(
@@ -34,17 +45,11 @@ files.put(
     src="tasks/.private/minecraft/ops.json",
     dest=stack_path + "ops.json",
     mode="644",
-)
-
-docker.network(
-    name="Set up dedicated network for minecraft",
-    network="minecraft",
-    attachable=True,
-    present=True
+    user="setup",
+    group="setup"
 )
 
 server.shell(
     name="Compose up minecraft",
-    commands=["cd " + stack_path + " && docker compose up -d"]
+    commands=["cd " + stack_path + " && docker compose up -d --force-recreate --remove-orphans"]
 )
-

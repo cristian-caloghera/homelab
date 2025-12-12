@@ -3,7 +3,7 @@ services:
     image: mumblevoip/mumble-server:latest
     container_name: mumble-server
     hostname: mumble-server
-    restart: unless-stopped
+    restart: always
     ports:
       - 64738:64738
       - 64738:64738/udp
@@ -30,7 +30,7 @@ services:
       - ./acmeout:/acme.sh
     network_mode: host
     command: daemon
-    restart: unless-stopped
+    restart: always
 
 volumes:
   mumble-data:

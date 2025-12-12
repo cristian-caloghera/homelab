@@ -1,77 +1,64 @@
 services:
-  mc-fabric:
-    image: itzg/minecraft-server
-    restart: unless-stopped
-    environment:
-      EULA: "TRUE"
-      TYPE: "FABRIC"
-      ENABLE_ROLLING_LOGS: "TRUE"
-      LOG_TIMESTAMP: "TRUE"
-      ENABLE_WHITELIST: "true"
-      WHITELIST_FILE: /whitelist.json
-      OPS_FILE: /ops.json
-      ALLOW_FLIGHT: "true"
-      MODRINTH_PROJECTS: |
-        fabric-api
-        floodgate
-        disconnect-packet-fix
-      PLUGINS: |
-        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/fabric
+# -----------------------------------------
+  banane:
+    extends:
+      file: ./compose.base.yaml
+      service: mc-server
     volumes:
-      - ./data:/data
-      - ./whitelist.json:/whitelist.json
-      - ./ops.json:/ops.json
+      - ./banane:/data
     networks:
-      - minecraft
+      - banane
     ports:
       - 19132:19132/udp
       - 25565:25565
-  mc-fabric-backup:
-    image: itzg/mc-backup
-    restart: unless-stopped
+    environment:
+      MOTD: "The Banane Server"
+  banane-backup:
+    extends:
+      file: ./compose.base.yaml
+      service: mc-backup
     depends_on:
-      mc-fabric:
+      banane:
         condition: service_healthy
     environment:
-      BACKUP_INTERVAL: "7d"
-      PRUNE_BACKUPS_DAYS: "21"
-      PAUSE_IF_NO_PLAYERS: "true"
-      PLAYERS_ONLINE_CHECK_INTERVAL: "8h"
-      RCON_HOST: mc-fabric
-      # since this service waits for mc to be healthy, no initial delay is needed
-      INITIAL_DELAY: 0
+      RCON_HOST: banane
+      BACKUP_NAME: banane
     volumes:
-      - ./data:/data:ro
-      - type: volume
-        source: mc-fabric-backups
-        target: /backups
-        volume:
-          nocopy: true
+      - ./banane:/data:ro
     networks:
-      - minecraft
-# another server
-#  forge:
-#    image: itzg/minecraft-server
-#    environment:
-#      EULA: "TRUE"
-#      TYPE: FORGE
-#  router:
-#    image: itzg/mc-router
-#    restart: unless-stopped
-#    depends_on:
-#      - mc-fabric
-#    environment:
-#      MAPPING: |
-#        mc-test=mc-fabric:25565
-#        mc-banane.demo.com=mc-fabric:25565
-#    ports:
-#      - "25565:25565"
-#    networks:
-#      - minecraft
+      - banane
+# -----------------------------------------
+  stolen-heart:
+    extends:
+      file: ./compose.base.yaml
+      service: mc-server
+    volumes:
+      - ./stolen-heart:/data
+    networks:
+      - stolen-heart
+    ports:
+      - 19133:19132/udp
+      - 25566:25565
+    environment:
+      MOTD: "The Stolen Heart Server"
+  stolen-heart-backup:
+    extends:
+      file: ./compose.base.yaml
+      service: mc-backup
+    depends_on:
+      stolen-heart:
+        condition: service_healthy
+    environment:
+      RCON_HOST: stolen-heart
+      BACKUP_NAME: stolen-heart
+    volumes:
+      - ./stolen-heart:/data:ro
+    networks:
+      - stolen-heart
 
 networks:
-  minecraft:
-    external: true
+  banane:
+  stolen-heart:
 
 volumes:
   mc-fabric-backups:

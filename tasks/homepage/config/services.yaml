@@ -80,7 +80,12 @@
           url: http://grafana:3000
           username: {{HOMEPAGE_VAR_GRAFANA_USER}}
           password: {{HOMEPAGE_VAR_GRAFANA_PASSWORD}}
-    - Minecraft:
+- Game Servers:
+    - Minecraft Banane:
         widget:
           type: minecraft
-          url: udp://mc-banane.burunet.lol:25565
+          url: udp://gume.{{HOMEPAGE_VAR_DOMAIN}}:25565
+    - Minecraft Stolen Heart:
+        widget:
+          type: minecraft
+          url: udp://gume.{{HOMEPAGE_VAR_DOMAIN}}:25566
