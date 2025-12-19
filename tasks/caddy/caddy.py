@@ -44,7 +44,7 @@ files.put(
 
 server.shell(
     name="Compose up caddy",
-    commands=["cd /opt/stacks/caddy && docker compose up -d"]
+    commands=["cd /opt/stacks/caddy && docker compose up -d --force-recreate"]
 )
 
 if host.data.caddy_add_local_root_cert:

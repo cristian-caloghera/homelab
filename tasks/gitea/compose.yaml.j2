@@ -13,13 +13,10 @@ services:
       - gitea:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    ports:
-      - "3003:3000"
-      - "222:22"
 
 networks:
   reverse_proxy_net:
-    external: false
+    external: true
 
 volumes:
   gitea:

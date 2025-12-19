@@ -30,6 +30,11 @@ http://influxdb2.{{ base_domain }} {
 	reverse_proxy influxdb2:8086
 }
 
+http://gitea.{{ base_domain }} {
+	log
+	reverse_proxy gitea:3000
+}
+
 http://grafana.{{ base_domain }} {
 	log
 	reverse_proxy grafana:3000

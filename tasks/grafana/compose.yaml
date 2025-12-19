@@ -12,8 +12,6 @@ services:
           - GF_LOG_LEVEL=info
     networks:
       - reverse_proxy_net
-    ports:
-      - '3000:3000'
     volumes:
       - ./provisioning:/etc/grafana/provisioning
       - grafana-storage:/var/lib/grafana
