@@ -50,6 +50,11 @@ http://prometheus.{{ base_domain }} {
 	reverse_proxy prometheus:9090
 }
 
+http://proxmox.{{ base_domain }} {
+	log
+	reverse_proxy play.{{ base_domain }}:8006
+}
+
 http://vpn.{{ base_domain }} {
 	log
 	reverse_proxy wireguard.{{ base_domain }}:51821

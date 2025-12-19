@@ -13,4 +13,3 @@ ftp_scanner_user = private_data.get('ftp_scanner_user')
 ftp_scanner_password = private_data.get('ftp_scanner_password')
 
 nfs_server_path_prefix    = ":appdata/"
-influxdb2_org             = private_data.get('influxdb2_org')

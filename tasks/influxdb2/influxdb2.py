@@ -17,7 +17,6 @@ files.template(
     dest=stack_path + "compose.yaml",
     nfs_server=host.data.nfs_server,
     nfs_path=host.data.nfs_server_path_prefix + "influxdb2",
-    influxdb2_org=host.data.influxdb2_org,
     mode="644",
     user="setup",
     group="setup"
